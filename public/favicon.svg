@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="juice-orange" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffc45c"/>
+      <stop offset="100%" stop-color="#ff8a1e"/>
+    </linearGradient>
+    <clipPath id="glass-clip">
+      <path d="M14 9 H34 L30.8 40.5 a2.2 2.2 0 0 1 -2.2 2 H19.4 a2.2 2.2 0 0 1 -2.2 -2 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- straw -->
+  <line x1="27" y1="34" x2="37" y2="2" stroke="#7e14ff" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="27" y1="34" x2="37" y2="2" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-dasharray="3.5 4.5" opacity="0.8"/>
+
+  <!-- glass outline -->
+  <path d="M14 9 H34 L30.8 40.5 a2.2 2.2 0 0 1 -2.2 2 H19.4 a2.2 2.2 0 0 1 -2.2 -2 Z"
+        fill="#fff" fill-opacity="0.05" stroke="#863bff" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- juice fill -->
+  <rect x="12" y="18" width="24" height="25" fill="url(#juice-orange)" clip-path="url(#glass-clip)"/>
+
+  <!-- juice surface -->
+  <ellipse cx="24" cy="18.2" rx="9.3" ry="1.7" fill="#ffdd94" clip-path="url(#glass-clip)"/>
+
+  <!-- glass shine -->
+  <path d="M17.3 13 L15.4 36" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- orange slice garnish on rim -->
+  <g transform="translate(32.5 8.5)">
+    <circle r="5.4" fill="#ff9a3c"/>
+    <circle r="4.3" fill="#ffe1a8"/>
+    <g stroke="#ff9a3c" stroke-width="0.7" opacity="0.9">
+      <line x1="0" y1="-4.3" x2="0" y2="4.3"/>
+      <line x1="-3.7" y1="-2.15" x2="3.7" y2="2.15"/>
+      <line x1="-3.7" y1="2.15" x2="3.7" y2="-2.15"/>
+    </g>
+  </g>
+</svg>
