@@ -2,8 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setMusicEnabled, setVolume } from '@/store/settingsSlice'
 import { Slider } from '@miblanchard/react-native-slider'
 import { useAudioPlayer } from 'expo-audio'
-import { useFocusEffect } from 'expo-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Platform, Pressable, Text, View } from 'react-native'
 
 const THEME_MUSIC = require('../../assets/audio/theme.wav')
@@ -26,34 +25,18 @@ export default function MusicToggle() {
   // unlocked, instead of calling play() speculatively and eating the error.
   const canAutoplay = Platform.OS !== 'web' || isAudioUnlocked
 
-  useFocusEffect(
-    useCallback(() => {
-      player.loop = true
-      if (isMusicEnabled && canAutoplay) player.play()
-      return () => player.pause()
-    }, [isMusicEnabled, canAutoplay, player]),
-  )
+  useEffect(() => {
+    player.loop = true
+    if (isMusicEnabled && canAutoplay) {
+      player.play()
+    } else {
+      player.pause()
+    }
+  }, [isMusicEnabled, canAutoplay, player])
 
   useEffect(() => {
     player.volume = volume
   }, [player, volume])
-
-  useEffect(() => {
-    if (Platform.OS !== 'web' || isAudioUnlocked) return
-
-    function unlock() {
-      setIsAudioUnlocked(true)
-      window.removeEventListener('pointerdown', unlock)
-      window.removeEventListener('keydown', unlock)
-    }
-
-    window.addEventListener('pointerdown', unlock)
-    window.addEventListener('keydown', unlock)
-    return () => {
-      window.removeEventListener('pointerdown', unlock)
-      window.removeEventListener('keydown', unlock)
-    }
-  }, [isAudioUnlocked])
 
   function openSlider() {
     if (closeTimer.current) clearTimeout(closeTimer.current)
@@ -70,12 +53,13 @@ export default function MusicToggle() {
       <Pressable
         onHoverIn={openSlider}
         onHoverOut={scheduleCloseSlider}
-        onPress={() => dispatch(setMusicEnabled(!isMusicEnabled))}
-        className={`h-10 w-10 items-center justify-center rounded-full bg-slate-800/80 active:bg-slate-700 ${
-          isAudioUnlocked ? '' : 'opacity-40'
-        }`}
+        onPress={() => {
+          setIsAudioUnlocked(true)
+          dispatch(setMusicEnabled(!isMusicEnabled))
+        }}
+        className="h-10 w-10 items-center justify-center rounded-full bg-slate-800/80 active:bg-slate-700"
       >
-        <Text className="text-lg">{isMusicEnabled ? '🔊' : '🔇'}</Text>
+        <Text className="text-lg">{isAudioUnlocked && isMusicEnabled ? '🔊' : '🔇'}</Text>
       </Pressable>
       <Pressable
         onHoverIn={openSlider}
@@ -95,6 +79,7 @@ export default function MusicToggle() {
           onSlidingStart={() => {
             isDragging.current = true
             openSlider()
+            setIsAudioUnlocked(true)
             if (!isMusicEnabled) dispatch(setMusicEnabled(true))
           }}
           onValueChange={(values) => dispatch(setVolume(Array.isArray(values) ? values[0] : values))}
