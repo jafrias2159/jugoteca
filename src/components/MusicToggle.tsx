@@ -54,8 +54,17 @@ export default function MusicToggle() {
         onHoverIn={openSlider}
         onHoverOut={scheduleCloseSlider}
         onPress={() => {
-          setIsAudioUnlocked(true)
-          dispatch(setMusicEnabled(!isMusicEnabled))
+          // The icon always shows muted before the browser unlocks audio,
+          // regardless of the underlying isMusicEnabled value (which may be
+          // a stale "false" from a previous session). So the first press
+          // must both unlock AND force it on, matching what the user sees;
+          // only presses after that toggle the mute state normally.
+          if (isAudioUnlocked) {
+            dispatch(setMusicEnabled(!isMusicEnabled))
+          } else {
+            setIsAudioUnlocked(true)
+            dispatch(setMusicEnabled(true))
+          }
         }}
         className="h-10 w-10 items-center justify-center rounded-full bg-slate-800/80 active:bg-slate-700"
       >
