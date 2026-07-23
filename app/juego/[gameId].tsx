@@ -3,6 +3,10 @@ import { games } from '@/data/games'
 import { Link, Redirect, useLocalSearchParams } from 'expo-router'
 import { ScrollView } from 'react-native'
 
+export function generateStaticParams() {
+  return games.map((game) => ({ gameId: game.id }))
+}
+
 export default function GameScreen() {
   const { gameId } = useLocalSearchParams<{ gameId: string }>()
   const game = games.find((g) => g.id === gameId)
