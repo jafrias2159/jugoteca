@@ -1,3 +1,4 @@
+import tracks from '@/audio/tracks'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setMusicEnabled, setVolume } from '@/store/settingsSlice'
 import { Slider } from '@miblanchard/react-native-slider'
@@ -5,13 +6,12 @@ import { useAudioPlayer } from 'expo-audio'
 import { useEffect, useRef, useState } from 'react'
 import { Platform, Pressable, Text, View } from 'react-native'
 
-const THEME_MUSIC = require('../../assets/audio/theme.wav')
-
 const SLIDER_WIDTH = 100
 const CLOSE_DELAY = 200
 
 export default function MusicToggle() {
-  const player = useAudioPlayer(THEME_MUSIC)
+  const [track] = useState(() => tracks[Math.floor(Math.random() * tracks.length)])
+  const player = useAudioPlayer(track)
   const dispatch = useAppDispatch()
   const isMusicEnabled = useAppSelector((state) => state.settings.isMusicEnabled)
   const volume = useAppSelector((state) => state.settings.volume)
