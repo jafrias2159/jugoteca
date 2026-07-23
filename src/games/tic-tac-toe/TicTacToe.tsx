@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Pressable, Text, View } from 'react-native'
 
 type Cell = 'X' | 'O' | null
 
@@ -48,28 +49,26 @@ export default function TicTacToe() {
   else status = `Turno de ${xIsNext ? 'X' : 'O'}`
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <p className="text-lg font-medium text-slate-200">{status}</p>
-      <div className="grid grid-cols-3 gap-2">
+    <View className="items-center gap-4">
+      <Text className="text-lg font-medium text-slate-200">{status}</Text>
+      <View className="w-60 flex-row flex-wrap gap-2">
         {board.map((cell, i) => (
-          <button
+          <Pressable
             key={i}
-            type="button"
-            onClick={() => handleClick(i)}
+            onPress={() => handleClick(i)}
             disabled={!!cell || !!winner}
-            className="flex h-20 w-20 items-center justify-center rounded-lg bg-slate-800 text-3xl font-bold text-slate-100 transition hover:bg-slate-700 disabled:cursor-default"
+            className="h-[72px] w-[72px] items-center justify-center rounded-lg bg-slate-800 active:bg-slate-700"
           >
-            {cell}
-          </button>
+            <Text className="text-3xl font-bold text-slate-100">{cell}</Text>
+          </Pressable>
         ))}
-      </div>
-      <button
-        type="button"
-        onClick={reset}
-        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500"
+      </View>
+      <Pressable
+        onPress={reset}
+        className="rounded-lg bg-indigo-600 px-4 py-2 active:bg-indigo-500"
       >
-        Reiniciar
-      </button>
-    </div>
+        <Text className="text-sm font-medium text-white">Reiniciar</Text>
+      </Pressable>
+    </View>
   )
 }

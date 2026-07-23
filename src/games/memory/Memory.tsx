@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Pressable, Text, View } from 'react-native'
 
 const EMOJIS = ['🍎', '🍋', '🍇', '🍓', '🍒', '🍌', '🍍', '🥝']
 
@@ -82,31 +83,31 @@ export default function Memory() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <p className="text-sm text-slate-400">
+    <View className="items-center gap-4">
+      <Text className="text-sm text-slate-400">
         {isWon ? `¡Completado en ${moves} movimientos!` : `Movimientos: ${moves}`}
-      </p>
-      <div className="grid grid-cols-4 gap-2">
+      </Text>
+      <View className="w-72 flex-row flex-wrap gap-2">
         {cards.map((card, index) => (
-          <button
+          <Pressable
             key={card.id}
-            type="button"
-            onClick={() => handleFlip(index)}
-            className={`flex h-16 w-16 items-center justify-center rounded-lg text-2xl transition ${
-              card.isFlipped || card.isMatched ? 'bg-slate-700' : 'bg-slate-800 hover:bg-slate-700'
+            onPress={() => handleFlip(index)}
+            className={`h-16 w-16 items-center justify-center rounded-lg ${
+              card.isFlipped || card.isMatched
+                ? 'bg-slate-700'
+                : 'bg-slate-800 active:bg-slate-700'
             }`}
           >
-            {card.isFlipped || card.isMatched ? card.emoji : ''}
-          </button>
+            <Text className="text-2xl">{card.isFlipped || card.isMatched ? card.emoji : ''}</Text>
+          </Pressable>
         ))}
-      </div>
-      <button
-        type="button"
-        onClick={reset}
-        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500"
+      </View>
+      <Pressable
+        onPress={reset}
+        className="rounded-lg bg-indigo-600 px-4 py-2 active:bg-indigo-500"
       >
-        Reiniciar
-      </button>
-    </div>
+        <Text className="text-sm font-medium text-white">Reiniciar</Text>
+      </Pressable>
+    </View>
   )
 }
